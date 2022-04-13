@@ -17,7 +17,6 @@ export interface AppState {
 }
 
 export class App extends React.Component<{}, AppState> {
-  private intervalId: NodeJS.Timer | undefined;
   private stopWatch: StopWatch;
 
   constructor(props: {}) {

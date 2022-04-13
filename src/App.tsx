@@ -1,6 +1,7 @@
 import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import { TimerDisplay } from "./TimerDisplay";
 import StopWatch from "./StopWatch";
 
@@ -13,6 +14,7 @@ export interface AppState {
   startTime: number;
   maxTime: number;
   currentTime: number;
+  isActive: boolean;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -21,34 +23,55 @@ export class App extends React.Component<{}, AppState> {
 
   constructor(props: {}) {
     super(props);
-    const currentTime = new Date().getTime();
     this.state = {
-      startTime: currentTime,
+      startTime: 0,
       maxTime: MAX_TIME,
-      currentTime: currentTime,
+      currentTime: 0,
+      isActive: false,
     };
     this.stopWatch = new StopWatch(() => {
       this.setState({
         currentTime: new Date().getTime(),
       });
     }, INTERVAL);
+
+    this.handleStartStopButtonClicked = this.handleStartStopButtonClicked.bind(this);
   }
 
   componentDidMount() {
-    this.stopWatch.start();
   }
+
   componentWillUnmount() {
     this.stopWatch.stop();
   }
+
+  private handleStartStopButtonClicked() {
+    if (this.state.isActive) {
+      this.stopWatch.stop();
+      this.setState({ isActive: false });
+    } else {
+      const ellapsedTime = this.state.currentTime - this.state.startTime;
+      const currentTime = new Date().getTime();
+      const startTime =  currentTime - ellapsedTime;
+      this.stopWatch.start();
+      this.setState({ isActive: true, startTime, currentTime });
+    }
+  }
+
   render() {
     const { currentTime, startTime, maxTime } = this.state;
-    const time = maxTime - (currentTime - startTime);
-    const positiveTime = time > 0 ? time : 0;
+    const ellapsedTime = maxTime - (currentTime - startTime);
+    const positiveEllapsedTime = ellapsedTime > 0 ? ellapsedTime : 0;
+    const startStopButtonLabel = this.state.isActive ? "STOP" : "START";
     return (
       <div>
         <CssBaseline/>
         <Container>
-          <TimerDisplay time={positiveTime} />
+          <TimerDisplay time={positiveEllapsedTime} />
+          <br />
+          <Button size="large" onClick={this.handleStartStopButtonClicked}>
+            {startStopButtonLabel}
+          </Button>
         </Container>
       </div>
     );

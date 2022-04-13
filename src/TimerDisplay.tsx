@@ -1,8 +1,15 @@
 import React from "react";
+import { styled } from "@mui/system";
 
 export function toTwoDigits(n: number): string {
   return n.toFixed(0).padStart(2, "0");
 }
+
+const StyledSpan = styled("span")({
+  color: "#0af",
+  fontFamily: "'Noto Sans Mono', monospace",
+  fontSize: "80px",
+});
 
 /**
  * @see TimerDisplay props.
@@ -21,8 +28,8 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({ time }) => {
   const ss = toTwoDigits(totalSeconds % 60);
 
   return (
-    <span className="timer-display">
+    <StyledSpan>
       {mm}:{ss}
-    </span>
+    </StyledSpan>
   );
 }

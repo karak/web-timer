@@ -1,4 +1,6 @@
 import React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
 import { TimerDisplay } from "./TimerDisplay";
 
 const INITIAL_TIME = 3 * 60; // seconds
@@ -39,6 +41,13 @@ export class App extends React.Component<{}, AppState> {
     const { currentTime, startTime, maxTime } = this.state;
     const time = maxTime - (currentTime - startTime);
     const positiveTime = time > 0 ? time : 0;
-    return <TimerDisplay time={positiveTime} />;
+    return (
+      <div>
+        <CssBaseline/>
+        <Container>
+          <TimerDisplay time={positiveTime} />
+        </Container>
+      </div>
+    );
   }
 }

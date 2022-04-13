@@ -11,9 +11,8 @@ const INTERVAL = 1000; // ms
 const MAX_TIME = 3 * 60 * 1000; // three minutes
 
 export interface AppState {
-  startTime: number;
   maxTime: number;
-  currentTime: number;
+  elapsedTime: number;
   isActive: boolean;
 }
 
@@ -24,15 +23,12 @@ export class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      startTime: 0,
       maxTime: MAX_TIME,
-      currentTime: 0,
+      elapsedTime: 0,
       isActive: false,
     };
-    this.stopWatch = new StopWatch(() => {
-      this.setState({
-        currentTime: new Date().getTime(),
-      });
+    this.stopWatch = new StopWatch((elapsedTime) => {
+      this.setState({ elapsedTime });
     }, INTERVAL);
 
     this.handleStartStopButtonClicked = this.handleStartStopButtonClicked.bind(this);
@@ -50,11 +46,8 @@ export class App extends React.Component<{}, AppState> {
       this.stopWatch.stop();
       this.setState({ isActive: false });
     } else {
-      const ellapsedTime = this.state.currentTime - this.state.startTime;
-      const currentTime = new Date().getTime();
-      const startTime =  currentTime - ellapsedTime;
       this.stopWatch.start();
-      this.setState({ isActive: true, startTime, currentTime });
+      this.setState({ isActive: true });
     }
   }
 

@@ -2,9 +2,10 @@ import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import { TimerDisplay } from "./TimerDisplay";
+import StopWatch from "./StopWatch";
 
 const INITIAL_TIME = 3 * 60; // seconds
-const INTERVAL = 1; // ms
+const INTERVAL = 1000; // ms
 
 const MAX_TIME = 3 * 60 * 1000; // three minutes
 
@@ -16,6 +17,7 @@ export interface AppState {
 
 export class App extends React.Component<{}, AppState> {
   private intervalId: NodeJS.Timer | undefined;
+  private stopWatch: StopWatch;
 
   constructor(props: {}) {
     super(props);
@@ -25,17 +27,18 @@ export class App extends React.Component<{}, AppState> {
       maxTime: MAX_TIME,
       currentTime: currentTime,
     };
-  }
-
-  componentDidMount() {
-    this.intervalId = setInterval(() => {
+    this.stopWatch = new StopWatch(() => {
       this.setState({
         currentTime: new Date().getTime(),
       });
-    }, 1000);
+    }, INTERVAL);
+  }
+
+  componentDidMount() {
+    this.stopWatch.start();
   }
   componentWillUnmount() {
-    clearInterval(this.intervalId!);
+    this.stopWatch.stop();
   }
   render() {
     const { currentTime, startTime, maxTime } = this.state;

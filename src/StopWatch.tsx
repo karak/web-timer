@@ -7,7 +7,15 @@ export default class StopWatch {
 
   constructor(callback: (elapsedTime: number) => void, interval: number) {
     this.interval = interval;
-    this.callback = () => callback(this.getElapsedTime());
+    this.callback = () => {
+      this.refreshElapsedTime();
+      callback(this.getElapsedTime());
+    }
+  }
+
+  private refreshElapsedTime() {
+    const currentTime = new Date().getTime();
+    this.currentTime = currentTime;
   }
 
   private getElapsedTime() {
@@ -16,14 +24,13 @@ export default class StopWatch {
 
   start(): void {
     const ellapsedTime = this.getElapsedTime();
-    const currentTime = new Date().getTime();
-    const startTime =  currentTime - ellapsedTime;
-    this.currentTime = currentTime;
-    this.startTime = startTime;
+    this.refreshElapsedTime();
+    this.startTime =  this.currentTime - ellapsedTime;
     this.intervalId = setInterval(this.callback, this.interval);
   }
 
   stop(): void {
     clearInterval(this.intervalId!);
+    this.callback();
   }
 }

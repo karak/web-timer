@@ -23,14 +23,13 @@ describe("StopWatch", () => {
     expect(fn).not.toHaveBeenCalled();
   });
 
-  it("shouldn't call callback when stopped", () => {
+  it("should call callback when stopped", () => {
     const fn = jest.fn();
     const stopWatch = new StopWatch(fn, INTERVAL);
     stopWatch.start();
-    jest.advanceTimersByTime(INTERVAL / 2);
+    jest.advanceTimersByTime(INTERVAL - 1);
     stopWatch.stop();
-    jest.advanceTimersByTime(INTERVAL);
-    expect(fn).not.toHaveBeenCalled();
+    expect(fn).toHaveBeenCalled();
   });
 
   it("should call callback when restarted", () => {

@@ -52,15 +52,15 @@ export class App extends React.Component<{}, AppState> {
   }
 
   render() {
-    const { currentTime, startTime, maxTime } = this.state;
-    const ellapsedTime = maxTime - (currentTime - startTime);
-    const positiveEllapsedTime = ellapsedTime > 0 ? ellapsedTime : 0;
+    const { elapsedTime, maxTime } = this.state;
+    const time = maxTime - elapsedTime;
+    const positiveTime = time > 0 ? time : 0;
     const startStopButtonLabel = this.state.isActive ? "STOP" : "START";
     return (
       <div>
         <CssBaseline/>
         <Container>
-          <TimerDisplay time={positiveEllapsedTime} />
+          <TimerDisplay time={positiveTime} />
           <br />
           <Button size="large" onClick={this.handleStartStopButtonClicked}>
             {startStopButtonLabel}

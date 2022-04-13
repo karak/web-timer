@@ -4,7 +4,7 @@
   "description": "A timer to use on browser.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "NODE_ENV=production webpack --config webpack.prod.js",
     "start": "webpack serve --config webpack.dev.js"
   },
@@ -24,6 +24,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.1",
     "@types/react": "^18.0.3",
     "@types/react-dom": "^18.0.0",
     "autoprefixer": "^10.4.4",
